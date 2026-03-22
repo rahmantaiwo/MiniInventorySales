@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Inventory & Sales Management";
+    Layout = "_Layout";
+}
+
+<!-- Hero section -->
+<section class="hero text-white text-center d-flex align-items-center" style="background: url('/images/hero-banner.jpg') center/cover; min-height:75vh;">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Manage Inventory & Track Sales Effortlessly</h1>
+        <p class="lead mt-3">A lightweight, modular system built for small businesses.</p>
+        <a class="btn btn-primary btn-lg mt-4" asp-controller="Auth" asp-action="Register">Get Started</a>
+    </div>
+</section>
+
+<!-- Features overview -->
+<section class="py-5 section-dark">
+    <div class="container">
+        <h2 class="text-center mb-4">Features</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi-box-seam fs-1 mb-3"></i>
+                        <h5 class="card-title">Product Management</h5>
+                        <p class="card-text">Add, edit and categorize products with ease.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi-cart-check fs-1 mb-3"></i>
+                        <h5 class="card-title">Sales Tracking</h5>
+                        <p class="card-text">Record transactions and monitor sales in real‑time.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi-bar-chart fs-1 mb-3"></i>
+                        <h5 class="card-title">Reporting</h5>
+                        <p class="card-text">Generate summaries to make informed decisions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Value proposition -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Why Choose MiniInventorySales?</h2>
+        <p class="text-center lead">Scalable architecture, clean design, and built with extensibility in mind. Add new modules like billing, reporting, or multi‑location support as your business grows.</p>
+    </div>
+</section>
