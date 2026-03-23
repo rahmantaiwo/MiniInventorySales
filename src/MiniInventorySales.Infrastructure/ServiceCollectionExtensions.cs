@@ -19,6 +19,7 @@ namespace MiniInventorySales.Infrastructure
                 options.UseSqlServer(cs);
             });
 
+
             // Repository DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();

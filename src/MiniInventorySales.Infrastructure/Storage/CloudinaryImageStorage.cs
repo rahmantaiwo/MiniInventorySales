@@ -12,9 +12,10 @@ namespace MiniInventorySales.Infrastructure.Storage
 
         public CloudinaryImageStorage(IConfiguration config)
         {
-            var cloudName = config["Cloudinary:SalesInventory"];
-            var apiKey = config["Cloudinary:639273652551796"];
-            var apiSecret = config["Cloudinary:FWk4EcU_X138sRy4JSeXvmQ6zZM"];
+            var cloudName = config["Cloudinary:CloudName"];
+            var apiKey = config["Cloudinary:ApiKey"];
+            var apiSecret = config["Cloudinary:ApiSecret"];
+
 
             if (string.IsNullOrWhiteSpace(cloudName) ||
                 string.IsNullOrWhiteSpace(apiKey) ||

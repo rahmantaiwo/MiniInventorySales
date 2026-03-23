@@ -157,7 +157,8 @@ namespace MiniInventorySales.Application.Services
                     QuantityInStock = product.QuantityInStock,
                     ReorderLevel = product.ReorderLevel,
                     ImageUrl = product.ImageUrl,
-                    IsActive = product.IsActive
+                    IsActive = product.IsActive,
+                    CreatedAt = product.CreatedAt
                 };
 
                 return BaseResponse<ProductDetailsDto>.IsSuccessful(dto, "Product retrieved successfully.");

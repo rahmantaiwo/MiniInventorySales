@@ -1,0 +1,94 @@
+@model ProductEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Product";
+    Layout = "_Layout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">Edit Product</h2>
+        <p class="text-muted mb-0">Update product details and availability.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">View Details</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Back to Products</a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ExistingImageUrl" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Sku" class="form-label"></label>
+                    <input asp-for="Sku" class="form-control" />
+                    <span asp-validation-for="Sku" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="UnitPrice" class="form-label"></label>
+                    <input asp-for="UnitPrice" class="form-control" />
+                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="QuantityInStock" class="form-label"></label>
+                    <input asp-for="QuantityInStock" class="form-control" />
+                    <span asp-validation-for="QuantityInStock" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="ReorderLevel" class="form-label"></label>
+                    <input asp-for="ReorderLevel" class="form-control" />
+                    <span asp-validation-for="ReorderLevel" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="IsActive" class="form-label">Status</label>
+                    <select asp-for="IsActive" class="form-select">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="NewImage" class="form-label">Replace Image (optional)</label>
+                    <input asp-for="NewImage" type="file" class="form-control" accept="image/*" />
+                    <span asp-validation-for="NewImage" class="text-danger"></span>
+                    <div class="form-text">Single image, max 2MB.</div>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Current Image</label>
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(Model.ExistingImageUrl))
+                        {
+                            <img src="@Model.ExistingImageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height: 160px;" />
+                        }
+                        else
+                        {
+                            <div class="bg-light border rounded p-4 text-center text-muted">
+                                No image uploaded.
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a class="btn btn-outline-secondary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
