@@ -2,17 +2,23 @@
 {
     public class Product : BaseEntity
     {
-        public string Sku { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-
-        public decimal UnitPrice { get; set; }
+        public string Sku { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }
+        public decimal CostPrice { get; set; }
+        public decimal SellingPrice { get; set; }
         public int QuantityInStock { get; set; }
         public int ReorderLevel { get; set; }
-
         public string? ImageUrl { get; set; }
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public int? CreatedByUserId { get; set; }
+        public AppUser? CreatedByUser { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public int? UpdatedByUserId { get; set; }
+        public AppUser? UpdatedByUser { get; set; }
 
         public ICollection<SaleItem> SaleItems { get; set; } = new List<SaleItem>();
     }

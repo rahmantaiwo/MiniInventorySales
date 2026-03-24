@@ -33,12 +33,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Seeding Data into Db
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await DbSeeder.SeedAsync(db);
-}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

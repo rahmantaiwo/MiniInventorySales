@@ -8,29 +8,39 @@ namespace MiniInventorySales.Infrastructure.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<AppUser> builder)
         {
-            builder.ToTable("AppUsers");
+            builder.ToTable("Users");
 
-            builder.HasKey(u => u.Id);
+            builder.HasKey(x => x.Id);
 
-            builder.Property(u => u.FirstName)
+            builder.Property(x => x.FullName)
                 .IsRequired()
-                .HasMaxLength(50);
-            builder.Property(u => u.LastName)
-                .IsRequired()
-                .HasMaxLength(50);
-            builder.HasIndex(u => u.Email).IsUnique();
+                .HasMaxLength(150);
 
-            builder.Property(u => u.PasswordHash).IsRequired();
-            builder.Property(u => u.IsActive).IsRequired();
-            builder.Property(u => u.Role).IsRequired();
+            builder.Property(x => x.Email)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            builder.Property(x => x.Username)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(x => x.PasswordHash)
+                .IsRequired()
+                .HasMaxLength(500);
+
+            builder.Property(x => x.PhoneNumber)
+                .HasMaxLength(20);
 
             builder.Property(x => x.IsActive)
-                   .HasDefaultValue(true)
-                   .IsRequired();
+                .HasDefaultValue(true);
 
-            builder.HasQueryFilter(x => x.IsActive);
+            builder.HasIndex(x => x.Email).IsUnique();
+            builder.HasIndex(x => x.Username).IsUnique();
 
-            builder.Property(u => u.CreatedAt).IsRequired();
+            builder.HasOne(x => x.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(x => x.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

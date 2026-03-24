@@ -1,6 +1,6 @@
 ﻿namespace MiniInventorySales.Application.DTOs.Auth
 {
-    internal class AuthSessionDto
+    internal class UserQueryRequest
     {
     }
 }

@@ -12,32 +12,57 @@ namespace MiniInventorySales.Infrastructure.Persistence.EntityConfigurations
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Sku).IsRequired().HasMaxLength(50);
-            builder.HasIndex(x => x.Sku).IsUnique();
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(150);
 
-            builder.ToTable("Products");
+            builder.Property(x => x.Sku)
+                .IsRequired()
+                .HasMaxLength(100);
 
-            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Description)
+                .HasMaxLength(500);
 
-            builder.Property(x => x.Sku).IsRequired().HasMaxLength(50);
-            builder.HasIndex(x => x.Sku).IsUnique();
+            builder.Property(x => x.CostPrice)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
 
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(150);
-            builder.HasIndex(x => x.Name);
+            builder.Property(x => x.SellingPrice)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
 
-            builder.Property(x => x.UnitPrice).HasColumnType("decimal(18,2)").IsRequired();
+            builder.Property(x => x.QuantityInStock)
+                .HasDefaultValue(0);
+
+            builder.Property(x => x.ReorderLevel)
+                .HasDefaultValue(0);
+
+            builder.Property(x => x.ImageUrl)
+                .HasMaxLength(500);
 
             builder.Property(x => x.IsActive)
-                   .HasDefaultValue(true)
-                   .IsRequired();
+                .HasDefaultValue(true);
 
-            builder.HasQueryFilter(x => x.IsActive);
+            builder.Property(x => x.CreatedAt)
+                .IsRequired();
 
-            builder.Property(x => x.QuantityInStock).IsRequired();
-            builder.Property(x => x.ReorderLevel).IsRequired();
+            builder.HasIndex(x => x.Sku)
+                .IsUnique();
 
-            builder.Property(x => x.QuantityInStock).IsRequired();
-            builder.Property(x => x.ReorderLevel).IsRequired();
+            builder.HasOne(x => x.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(x => x.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.CreatedByUser)
+                .WithMany(u => u.CreatedProducts)
+                .HasForeignKey(x => x.CreatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.UpdatedByUser)
+                .WithMany(u => u.UpdatedProducts)
+                .HasForeignKey(x => x.UpdatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
