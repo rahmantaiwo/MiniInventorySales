@@ -14,10 +14,10 @@
         public string? ImageUrl { get; set; }
         public bool IsActive { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public int? CreatedByUserId { get; set; }
+        public Guid? CreatedByUserId { get; set; }
         public AppUser? CreatedByUser { get; set; }
 
-        public int? UpdatedByUserId { get; set; }
+        public Guid? UpdatedByUserId { get; set; }
         public AppUser? UpdatedByUser { get; set; }
 
         public ICollection<SaleItem> SaleItems { get; set; } = new List<SaleItem>();

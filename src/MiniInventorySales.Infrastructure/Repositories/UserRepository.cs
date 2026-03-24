@@ -30,13 +30,23 @@ namespace MiniInventorySales.Infrastructure.Repositories
         public async Task<AppUser?> GetUserByEmailAsync(string email, CancellationToken ct = default)
         {
             return
-                 await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+                 await _db.Users.FirstOrDefaultAsync(u => u.Email == email, ct);
+        }
+
+        public async Task<AppUser?> GetUserByUsernameAsync(string username, CancellationToken ct = default)
+        {
+            return await _db.Users.FirstOrDefaultAsync(u => u.Username == username, ct);
         }
 
         public async Task<AppUser?> GetUserByIdAsync(Guid id, CancellationToken ct = default)
         {
             return 
-                await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+                await _db.Users.FirstOrDefaultAsync(u => u.Id == id, ct);
+        }
+
+        public Task<List<AppUser>> GetAllAsync(CancellationToken ct = default)
+        {
+            return _db.Users.ToListAsync(ct);
         }
 
         public async Task UpdateUserAsync(AppUser user, CancellationToken ct = default)

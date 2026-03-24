@@ -36,7 +36,6 @@ namespace MiniInventorySales.Application.DTOs.Auth
         public string Password { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Role id is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Select a valid role")]
-        public int RoleId { get; set; }
+        public Guid RoleId { get; set; }
     }
 }

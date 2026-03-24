@@ -11,6 +11,7 @@ namespace MiniInventorySales.Infrastructure.Persistence
 
         public DbSet<AuditLog> AuditLogs { get; set; } = null!;
         public DbSet<AppUser> Users { get; set; } = null!;
+        public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Sale> Sales { get; set; } = null!;
         public DbSet<SaleItem> SaleItems { get; set; } = null!;

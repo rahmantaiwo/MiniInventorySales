@@ -28,6 +28,9 @@ namespace MiniInventorySales.Infrastructure.Persistence.EntityConfigurations
                 .IsRequired()
                 .HasMaxLength(500);
 
+            builder.Property(x => x.PasswordResetToken)
+                .HasMaxLength(500);
+
             builder.Property(x => x.PhoneNumber)
                 .HasMaxLength(20);
 

@@ -6,8 +6,7 @@ namespace MiniInventorySales.Application.DTOs.Auth
     public class ChangePasswordRequest
     {
         [Required(ErrorMessage = "User id is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Invalid user id")]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required(ErrorMessage = "Current password is required")]
         [DataType(DataType.Password)]

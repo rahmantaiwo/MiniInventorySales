@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using MiniInventorySales.Domain.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
 using MiniInventorySales.Web.Models;
 using System.Diagnostics;
 

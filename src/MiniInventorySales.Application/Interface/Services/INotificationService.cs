@@ -4,12 +4,12 @@ namespace MiniInventorySales.Application.Interface.Services
 {
     public interface INotificationService
     {
-        Task CreateAsync(int userId, string title, string message);
+        Task CreateAsync(Guid userId, string title, string message);
 
-        Task<List<NotificationDto>> GetUserNotificationsAsync(int userId);
+        Task<List<NotificationDto>> GetUserNotificationsAsync(Guid userId);
 
-        Task MarkAsReadAsync(int notificationId);
+        Task MarkAsReadAsync(Guid notificationId);
 
-        Task MarkAllAsReadAsync(int userId);
+        Task MarkAllAsReadAsync(Guid userId);
     }
 }

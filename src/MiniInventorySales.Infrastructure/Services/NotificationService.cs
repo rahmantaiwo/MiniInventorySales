@@ -18,7 +18,7 @@ namespace MiniInventorySales.Infrastructure.Services
             _logger = logger;
         }
 
-        public async Task CreateAsync(int userId, string title, string message)
+        public async Task CreateAsync(Guid userId, string title, string message)
         {
             try
             {
@@ -43,14 +43,14 @@ namespace MiniInventorySales.Infrastructure.Services
             }
         }
 
-        public async Task<List<NotificationDto>> GetUserNotificationsAsync(int userId)
+        public async Task<List<NotificationDto>> GetUserNotificationsAsync(Guid userId)
         {
             return await _context.Notifications
                 .Where(n => n.UserId == userId)
                 .OrderByDescending(n => n.CreatedAt)
                 .Select(n => new NotificationDto
                 {
-                    Id = n.UserId,
+                    Id = n.Id,
                     Title = n.Title,
                     Message = n.Message,
                     IsRead = n.IsRead,
@@ -59,10 +59,10 @@ namespace MiniInventorySales.Infrastructure.Services
                 .ToListAsync();
         }
 
-        public async Task MarkAsReadAsync(int notificationId)
+        public async Task MarkAsReadAsync(Guid notificationId)
         {
             var notification = await _context.Notifications
-                .FirstOrDefaultAsync(n => n.UserId == notificationId);
+                .FirstOrDefaultAsync(n => n.Id == notificationId);
 
             if (notification == null)
                 return;
@@ -72,7 +72,7 @@ namespace MiniInventorySales.Infrastructure.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task MarkAllAsReadAsync(int userId)
+        public async Task MarkAllAsReadAsync(Guid userId)
         {
             var notifications = await _context.Notifications
                 .Where(n => n.UserId == userId && !n.IsRead)
