@@ -13,8 +13,12 @@ namespace MiniInventorySales.Application.Validation.Products
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Name is required.")
                 .MaximumLength(100).WithMessage("Name must not exceed 100 characters.");
-            RuleFor(x => x.UnitPrice)
-                .GreaterThan(0).WithMessage("Unit price must be greater than zero.");
+            RuleFor(x => x.CategoryId)
+                .NotEmpty().WithMessage("Category is required.");
+            RuleFor(x => x.CostPrice)
+                .GreaterThanOrEqualTo(0).WithMessage("Cost price cannot be negative.");
+            RuleFor(x => x.SellingPrice)
+                .GreaterThan(0).WithMessage("Selling price must be greater than zero.");
             RuleFor(x => x.QuantityInStock)
                 .GreaterThanOrEqualTo(0).WithMessage("Quantity in stock cannot be negative.");
             RuleFor(x => x.ReorderLevel)

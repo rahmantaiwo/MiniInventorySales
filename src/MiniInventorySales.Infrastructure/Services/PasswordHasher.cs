@@ -1,28 +1,17 @@
-using System.Security.Cryptography;
 using MiniInventorySales.Application.Interface.Services;
 
 namespace MiniInventorySales.Infrastructure.Services
 {
     public class PasswordHasher : IPasswordHasher
     {
-        private const int SaltSize = 16; // 128-bit
-        private const int KeySize = 32;  // 256-bit
-        private const int Iterations = 100_000;
+        private const int WorkFactor = 12;
 
         public string HashPassword(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Password cannot be empty.", nameof(password));
 
-            var salt = RandomNumberGenerator.GetBytes(SaltSize);
-            var hash = Rfc2898DeriveBytes.Pbkdf2(
-                password,
-                salt,
-                Iterations,
-                HashAlgorithmName.SHA256,
-                KeySize);
-
-            return $"{Iterations}.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
+            return BCrypt.Net.BCrypt.HashPassword(password, workFactor: WorkFactor);
         }
 
         public bool VerifyPassword(string password, string passwordHash)
@@ -30,24 +19,7 @@ namespace MiniInventorySales.Infrastructure.Services
             if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(passwordHash))
                 return false;
 
-            var parts = passwordHash.Split('.', 3);
-            if (parts.Length != 3)
-                return false;
-
-            if (!int.TryParse(parts[0], out var iterations))
-                return false;
-
-            var salt = Convert.FromBase64String(parts[1]);
-            var expectedHash = Convert.FromBase64String(parts[2]);
-
-            var actualHash = Rfc2898DeriveBytes.Pbkdf2(
-                password,
-                salt,
-                iterations,
-                HashAlgorithmName.SHA256,
-                expectedHash.Length);
-
-            return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
+            return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
     }
 }

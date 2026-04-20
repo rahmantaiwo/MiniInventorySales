@@ -12,7 +12,9 @@ namespace MiniInventorySales.Application.Validation.Products
             RuleFor(x => x.Sku).NotEmpty().MaximumLength(50);
             RuleFor(x => x.Name).NotEmpty().MaximumLength(150);
 
-            RuleFor(x => x.UnitPrice).GreaterThan(0);
+            RuleFor(x => x.CategoryId).NotEmpty();
+            RuleFor(x => x.CostPrice).GreaterThanOrEqualTo(0);
+            RuleFor(x => x.SellingPrice).GreaterThan(0);
             RuleFor(x => x.QuantityInStock).GreaterThanOrEqualTo(0);
             RuleFor(x => x.ReorderLevel).GreaterThanOrEqualTo(0);
 

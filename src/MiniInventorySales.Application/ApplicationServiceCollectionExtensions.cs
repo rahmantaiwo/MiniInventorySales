@@ -14,6 +14,7 @@ namespace MiniInventorySales.Application
             // Use-case services (Application layer)
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             services.AddValidatorsFromAssembly(typeof(CreateProductRequestValidator).Assembly);
             services.AddScoped<IProductService, ProductService>();

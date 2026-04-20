@@ -32,6 +32,7 @@ namespace MiniInventorySales.Infrastructure
             // Repository DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped< ISaleRepository, SaleRepository> ();
 

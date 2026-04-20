@@ -62,7 +62,7 @@
 <div class="card shadow-sm mb-4">
     <div class="card-body">
         <form method="get" class="row g-2 align-items-end">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <label class="form-label">Search</label>
                 <input class="form-control" name="Search" value="@Model.Query.Search" placeholder="Search by SKU or name" />
             </div>
@@ -72,6 +72,15 @@
                     <option value="" selected="@(Model.Query.IsActive is null)">All</option>
                     <option value="true" selected="@(Model.Query.IsActive == true)">Active</option>
                     <option value="false" selected="@(Model.Query.IsActive == false)">Inactive</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Category</label>
+                <select class="form-select" name="CategoryId">
+                    @foreach (var option in Model.CategoryOptions)
+                    {
+                        <option value="@option.Value" selected="@option.Selected">@option.Text</option>
+                    }
                 </select>
             </div>
             <div class="col-md-2">
@@ -108,7 +117,8 @@ else
                         <th>Image</th>
                         <th>SKU</th>
                         <th>Name</th>
-                        <th class="text-end">Price</th>
+                        <th>Category</th>
+                        <th class="text-end">Selling Price</th>
                         <th class="text-end">Stock</th>
                         <th class="text-end">Reorder</th>
                         <th>Status</th>
@@ -134,7 +144,8 @@ else
                         </td>
                         <td class="fw-semibold">@item.Sku</td>
                         <td>@item.Name</td>
-                        <td class="text-end">@item.UnitPrice.ToString("N2")</td>
+                        <td>@item.CategoryName</td>
+                        <td class="text-end">@item.SellingPrice.ToString("N2")</td>
                         <td class="text-end">
                             <span class="@(isLow ? "text-danger fw-semibold" : "")">@item.QuantityInStock</span>
                         </td>
@@ -187,7 +198,8 @@ else
                                asp-route-PageNumber="@(Model.Paged.PageNumber - 1)"
                                asp-route-PageSize="@Model.Query.PageSize"
                                asp-route-Search="@Model.Query.Search"
-                               asp-route-IsActive="@Model.Query.IsActive">Prev</a>
+                               asp-route-IsActive="@Model.Query.IsActive"
+                               asp-route-CategoryId="@Model.Query.CategoryId">Prev</a>
                         </li>
                         @for (var i = 1; i <= Model.Paged.TotalPages; i++)
                         {
@@ -196,7 +208,8 @@ else
                                    asp-route-PageNumber="@i"
                                    asp-route-PageSize="@Model.Query.PageSize"
                                    asp-route-Search="@Model.Query.Search"
-                                   asp-route-IsActive="@Model.Query.IsActive">@i</a>
+                                   asp-route-IsActive="@Model.Query.IsActive"
+                                   asp-route-CategoryId="@Model.Query.CategoryId">@i</a>
                             </li>
                         }
                         <li class="page-item @(Model.Paged.PageNumber >= Model.Paged.TotalPages ? "disabled" : "")">
@@ -204,7 +217,8 @@ else
                                asp-route-PageNumber="@(Model.Paged.PageNumber + 1)"
                                asp-route-PageSize="@Model.Query.PageSize"
                                asp-route-Search="@Model.Query.Search"
-                               asp-route-IsActive="@Model.Query.IsActive">Next</a>
+                               asp-route-IsActive="@Model.Query.IsActive"
+                               asp-route-CategoryId="@Model.Query.CategoryId">Next</a>
                         </li>
                     </ul>
                 </nav>

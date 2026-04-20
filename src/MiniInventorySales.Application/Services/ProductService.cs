@@ -11,17 +11,20 @@ namespace MiniInventorySales.Application.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _products;
+        private readonly ICategoryRepository _categories;
         private readonly IImageStorage _images;
         private readonly IValidator<CreateProductRequest> _createValidator;
         private readonly IValidator<UpdateProductRequest> _updateValidator;
 
         public ProductService(
         IProductRepository productRepository,
+        ICategoryRepository categoryRepository,
         IImageStorage imageStorage,
         IValidator<CreateProductRequest> createValidator,
         IValidator<UpdateProductRequest> updateValidator)
         {
             _products = productRepository;
+            _categories = categoryRepository;
             _images = imageStorage;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
@@ -43,6 +46,10 @@ namespace MiniInventorySales.Application.Services
                 if (existingProduct is not null)
                     return BaseResponse<Guid>.Failure("A product with this SKU already exists.");
 
+                var category = await _categories.GetByIdAsync(request.CategoryId, ct);
+                if (category is null)
+                    return BaseResponse<Guid>.Failure("Invalid category.", "Selected category does not exist.");
+
                 string? imageUrl = null;
                 if (request.Image is not null && request.Image.Content.Length > 0)
                 {
@@ -53,7 +60,10 @@ namespace MiniInventorySales.Application.Services
                 {
                     Sku = request.Sku.Trim(),
                     Name = request.Name.Trim(),
-                    UnitPrice = request.UnitPrice,
+                    Description = request.Description?.Trim(),
+                    CategoryId = request.CategoryId,
+                    CostPrice = request.CostPrice,
+                    SellingPrice = request.SellingPrice,
                     QuantityInStock = request.QuantityInStock,
                     ReorderLevel = request.ReorderLevel,
                     ImageUrl = imageUrl,
@@ -91,6 +101,7 @@ namespace MiniInventorySales.Application.Services
             try
             {
                 var query = _products.Query();
+                query = query.Include(x => x.Category);
 
                 if (!string.IsNullOrWhiteSpace(request.Search))
                 {
@@ -98,6 +109,11 @@ namespace MiniInventorySales.Application.Services
                     query = query.Where(x =>
                         x.Name.ToLower().Contains(search) ||
                         x.Sku.ToLower().Contains(search));
+                }
+
+                if (request.CategoryId.HasValue)
+                {
+                    query = query.Where(x => x.CategoryId == request.CategoryId.Value);
                 }
 
                 if (request.IsActive.HasValue)
@@ -116,7 +132,9 @@ namespace MiniInventorySales.Application.Services
                         Id = x.Id,
                         Sku = x.Sku,
                         Name = x.Name,
-                        UnitPrice = x.UnitPrice,
+                        CategoryId = x.CategoryId,
+                        CategoryName = x.Category != null ? x.Category.Name : string.Empty,
+                        SellingPrice = x.SellingPrice,
                         QuantityInStock = x.QuantityInStock,
                         ReorderLevel = x.ReorderLevel,
                         ImageUrl = x.ImageUrl,
@@ -148,12 +166,18 @@ namespace MiniInventorySales.Application.Services
                 if (product is null)
                     return BaseResponse<ProductDetailsDto>.Failure("Not found.", "Product does not exist.");
 
+                var category = product.Category ?? await _categories.GetByIdAsync(product.CategoryId, ct);
+
                 var dto = new ProductDetailsDto
                 {
                     Id = product.Id,
                     Sku = product.Sku,
                     Name = product.Name,
-                    UnitPrice = product.UnitPrice,
+                    Description = product.Description,
+                    CategoryId = product.CategoryId,
+                    CategoryName = category?.Name ?? string.Empty,
+                    CostPrice = product.CostPrice,
+                    SellingPrice = product.SellingPrice,
                     QuantityInStock = product.QuantityInStock,
                     ReorderLevel = product.ReorderLevel,
                     ImageUrl = product.ImageUrl,
@@ -189,6 +213,10 @@ namespace MiniInventorySales.Application.Services
                 if (existingSku is not null && existingSku.Id != request.Id)
                     return BaseResponse<ProductDetailsDto>.Failure("Another product already uses this SKU.");
 
+                var category = await _categories.GetByIdAsync(request.CategoryId, ct);
+                if (category is null)
+                    return BaseResponse<ProductDetailsDto>.Failure("Invalid category.", "Selected category does not exist.");
+
                 if (request.NewImage is not null && request.NewImage.Content.Length > 0)
                 {
                     product.ImageUrl = await _images.UploadAsync(request.NewImage, ct);
@@ -196,7 +224,10 @@ namespace MiniInventorySales.Application.Services
 
                 product.Sku = request.Sku.Trim();
                 product.Name = request.Name.Trim();
-                product.UnitPrice = request.UnitPrice;
+                product.Description = request.Description?.Trim();
+                product.CategoryId = request.CategoryId;
+                product.CostPrice = request.CostPrice;
+                product.SellingPrice = request.SellingPrice;
                 product.QuantityInStock = request.QuantityInStock;
                 product.ReorderLevel = request.ReorderLevel;
                 product.IsActive = request.IsActive;
@@ -208,7 +239,11 @@ namespace MiniInventorySales.Application.Services
                     Id = product.Id,
                     Sku = product.Sku,
                     Name = product.Name,
-                    UnitPrice = product.UnitPrice,
+                    Description = product.Description,
+                    CategoryId = product.CategoryId,
+                    CategoryName = category.Name,
+                    CostPrice = product.CostPrice,
+                    SellingPrice = product.SellingPrice,
                     QuantityInStock = product.QuantityInStock,
                     ReorderLevel = product.ReorderLevel,
                     ImageUrl = product.ImageUrl,

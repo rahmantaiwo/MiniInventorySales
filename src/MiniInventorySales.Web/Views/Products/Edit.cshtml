@@ -36,10 +36,25 @@
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
+                <div class="col-md-6">
+                    <label asp-for="CategoryId" class="form-label">Category</label>
+                    <select asp-for="CategoryId" class="form-select" asp-items="Model.CategoryOptions"></select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Description" class="form-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
                 <div class="col-md-4">
-                    <label asp-for="UnitPrice" class="form-label"></label>
-                    <input asp-for="UnitPrice" class="form-control" />
-                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                    <label asp-for="CostPrice" class="form-label"></label>
+                    <input asp-for="CostPrice" class="form-control" />
+                    <span asp-validation-for="CostPrice" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="SellingPrice" class="form-label"></label>
+                    <input asp-for="SellingPrice" class="form-control" />
+                    <span asp-validation-for="SellingPrice" class="text-danger"></span>
                 </div>
                 <div class="col-md-4">
                     <label asp-for="QuantityInStock" class="form-label"></label>

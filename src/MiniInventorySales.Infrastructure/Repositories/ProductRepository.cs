@@ -13,7 +13,7 @@ namespace MiniInventorySales.Infrastructure.Repositories
 
         public async Task AddAsync(Product product, CancellationToken ct = default)
         {
-            _db.Products.AddAsync(product, ct);
+            await _db.Products.AddAsync(product, ct);
             await _db.SaveChangesAsync(ct);
 
         }
@@ -31,7 +31,9 @@ namespace MiniInventorySales.Infrastructure.Repositories
         public async Task<Product?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
             return
-            await _db.Products.FirstOrDefaultAsync(p => p.Id == id, ct);
+            await _db.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.Id == id, ct);
         }
 
         public Task<Product?> GetBySkuAsync(string sku, CancellationToken ct = default)
@@ -43,6 +45,7 @@ namespace MiniInventorySales.Infrastructure.Repositories
         public IQueryable<Product> Query()
         {
             return _db.Products
+                .Include(p => p.Category)
                 .AsNoTracking()
                 .AsQueryable();
         }
